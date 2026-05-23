@@ -1,0 +1,74 @@
+LAMMPS (22 Aug 2018)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (src/comm.cpp:87)
+  using 1 OpenMP thread(s) per MPI task
+Reading data file ...
+  orthogonal box = (-0 -0 -0) to (100 100 100)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  561 atoms
+WARNING: The pair_style meam command is unsupported. Please use pair_style meam/c instead (src/MEAM/pair_meam.cpp:51)
+Reading potential file library.meam with DATE: 2012-06-29
+Neighbor list info ...
+  update every 1 steps, delay 10 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6
+  ghost atom cutoff = 6
+  binsize = 3, bins = 34 34 34
+  2 neighbor lists, perpetual/occasional/extra = 2 0 0
+  (1) pair meam, perpetual
+      attributes: full, newton on
+      pair build: full/bin/atomonly
+      stencil: full/bin/3d
+      bin: standard
+  (2) pair meam, perpetual, half/full from (1)
+      attributes: half, newton on
+      pair build: halffull/newton
+      stencil: none
+      bin: none
+Setting up Verlet run ...
+  Unit style    : metal
+  Current step  : 0
+  Time step     : 0.005
+Per MPI rank memory allocation (min/avg/max) = 9.723 | 9.723 | 9.723 Mbytes
+Step Temp PotEng KinEng TotEng 
+       0         1200    -1726.413    86.862817   -1639.5502 
+     200    1216.6298   -1727.5766    88.066578   -1639.5101 
+     400    1078.7484   -1717.1956    78.085939   -1639.1096 
+     600    997.83606   -1710.8178    72.229043   -1638.5888 
+     800    1027.3038   -1712.8306    74.362088   -1638.4686 
+    1000    1017.1179   -1711.7748    73.624769     -1638.15 
+    1200    919.12462   -1704.6486    66.531462   -1638.1171 
+    1400    941.16126   -1705.9341    68.126599   -1637.8075 
+    1600    958.13034   -1706.9464    69.354918   -1637.5915 
+    1800    932.79549   -1704.7622    67.521037   -1637.2412 
+    2000    945.10934   -1705.6864    68.412383   -1637.2741 
+Loop time of 10.0961 on 1 procs for 2000 steps with 561 atoms
+
+Performance: 85.578 ns/day, 0.280 hours/ns, 198.097 timesteps/s
+99.6% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 9.881      | 9.881      | 9.881      |   0.0 | 97.87
+Neigh   | 0.15951    | 0.15951    | 0.15951    |   0.0 |  1.58
+Comm    | 0.0012352  | 0.0012352  | 0.0012352  |   0.0 |  0.01
+Output  | 0.015644   | 0.015644   | 0.015644   |   0.0 |  0.15
+Modify  | 0.032381   | 0.032381   | 0.032381   |   0.0 |  0.32
+Other   |            | 0.006329   |            |       |  0.06
+
+Nlocal:    561 ave 561 max 561 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:    0 ave 0 max 0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:    14044 ave 14044 max 14044 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:  28088 ave 28088 max 28088 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 28088
+Ave neighs/atom = 50.0677
+Neighbor list builds = 100
+Dangerous builds = 0
+All done!
+Total wall time: 0:00:10

@@ -1,0 +1,59 @@
+# ---------- LAMMPS Script --------------------- 
+
+# Energy minimization of a system with variable definition and computation of quantities.
+
+# ---------- Initialize Simulation --------------------- 
+
+units 			metal 
+dimension		3 
+atom_style 		atomic
+boundary 		p p p 
+ 
+# ---------- Create Atoms --------------------- 
+
+
+variable        a equal 3.05                 			# starting lattice parameter
+variable        N equal 15                              # supercell size 
+lattice			fcc $a orient x 1 0 0 orient y 0 1 0 orient z 0 0 1 		# create a lattice with specific lattice constant and orientation
+region			box block 0 $N 0 $N 0 $N units lattice
+create_box		1 box
+create_atoms 	1 box
+
+# ---------- Define Interatomic Potential --------------------- 
+
+pair_style 		eam/alloy 
+pair_coeff		* * Al99.eam.alloy Al
+ 
+# ---------- Define compute --------------------- 
+
+compute 		eng all pe/atom 										# compute the potential energy per atom
+compute			eatoms all reduce sum c_eng 							# compute the total potential energy of the system
+
+# ---------- Dump parameters --------------------- 
+
+thermo 			10 
+thermo_style 	custom step pe lx ly lz press pxx pyy pzz c_eatoms 		
+dump           	mydump all custom 10 fcc.dump id type x y z c_eng		# export the structure files after a specific number of steps with custom properties
+
+# ---------- Run Minimization --------------------- 
+
+fix 			1 all box/relax iso 0.0 vmax 0.001
+min_style 		cg 
+minimize 		1e-10 1e-10 10000 10000 
+
+# ---------- Calculation --------------------- 
+
+run				0														# run 0, to be able to save variables from thermo
+
+variable 		natoms 				equal "count(all)" 					# define variables
+variable 		teng 				equal "c_eatoms"
+variable 		length				equal "lx"
+variable 		lattice_constant 	equal v_length/v_N					# compute variable from variables
+variable 		ecoh				equal "v_teng/v_natoms"
+
+print 			"Total energy (eV) = ${teng};"							# print variable values
+print 			"Number of atoms = ${natoms};"
+print 			"Lattice constant (Angstoms) = ${lattice_constant};"
+print 			"Cohesive energy (eV) = ${ecoh};"
+
+print 			"All done!" 

@@ -1,0 +1,56 @@
+# ---------- LAMMPS Script --------------------- 
+
+# Calculation of total energy for different lattice constants using a  loop.
+
+print "Volume Cohesive_Energy" file result.out
+
+# ---------- Initialize a loop ---------------------
+
+variable	a loop 30															# create a loop variable 
+label		loop_a																# create a loop label
+
+# ---------- Initialize Simulation --------------------- 
+clear 
+units 			metal 
+dimension 		3 
+atom_style		atomic 
+boundary 		p p p 
+
+# ---------- Create Atoms --------------------- 
+
+variable        latconst equal 3.90+$a*0.01										# the lattice constant varies with the loop variable
+variable        N equal 20
+ 
+lattice			fcc ${latconst} orient x 1 0 0 orient y 0 1 0 orient z 0 0 1 
+region			box block 0 $N 0 $N 0 $N units lattice
+create_box		1 box
+create_atoms 	1 box
+
+
+# ---------- Define Interatomic Potential --------------------- 
+
+pair_style 		eam/alloy 
+pair_coeff 		* * Al99.eam.alloy Al
+ 
+# ---------- Calculation --------------------- 
+
+run 			0
+
+variable 		natoms equal "count(all)" 
+variable 		teng equal "pe"
+variable 		length equal "lx"
+variable 		lattice_constant equal v_length/v_N
+variable		v equal vol
+variable 		ecoh equal "v_teng/v_natoms"
+
+print 			"Total energy (eV) = ${teng};"
+print 			"Number of atoms = ${natoms};"
+print 			"Lattice constant (Angstoms) = ${lattice_constant};"
+print 			"Cohesive energy (eV) = ${ecoh};"
+
+print 			"All done!" 
+
+print 			"${v} ${ecoh}" append result.out							# store the data to a file
+
+next			a															    # go to the next loop variable
+jump			SELF loop_a														# go back to the loop label

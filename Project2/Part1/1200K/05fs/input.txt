@@ -1,0 +1,37 @@
+# Initialization
+
+units		  metal
+dimension 	      3
+boundary	  f f f
+atom_style	 atomic
+
+
+# Atom Definition
+
+read_data atom_definition.txt
+
+
+# Settings
+
+#pair_style meam/c
+pair_style meam
+pair_coeff	* * library.meam Cu NULL Cu
+
+velocity         all create 1200 12345 mom yes rot yes dist gaussian
+timestep         0.0005
+fix              1 all nve
+fix              2 all recenter INIT INIT INIT
+
+
+dump myDump all custom 200 trajectory.txt id element x y z
+dump_modify myDump element Cu sort id
+
+thermo_style custom step temp pe ke etotal 
+thermo 200
+
+
+# Run a simulation
+
+run              20000
+
+print "All done!" 

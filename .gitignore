@@ -1,0 +1,21 @@
+# Large trajectory files
+trajectory.txt
+*.lammpstrj
+*.dump
+*.traj
+*.xyz
+
+# LAMMPS / simulation output files
+*.out
+*.log
+log.lammps
+screen.*
+
+# Temporary / cache files
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# OS files
+.DS_Store
+Thumbs.db

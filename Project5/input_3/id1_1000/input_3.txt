@@ -1,0 +1,63 @@
+# ---------- LAMMPS Script --------------------- 
+# Formation energy of two vacancies.
+
+units           metal 
+dimension       3 
+atom_style      atomic
+boundary        p p p 
+
+variable        a equal 4.05                
+variable        N equal 15
+
+lattice         fcc $a                      
+region          box block 0 $N 0 $N 0 $N units lattice        
+create_box      1 box                         
+create_atoms    1 box                        
+
+pair_style      eam/alloy                
+pair_coeff      * * Al99.eam.alloy Al   
+
+thermo          10
+thermo_style    custom step atoms pe
+
+# ---------- Perfect crystal ----------
+min_style       cg                       
+minimize        1e-10 1e-10 10000 10000    
+run             0
+
+write_data      structure_pristine_final.txt
+
+variable        E0_now equal pe
+variable        Natoms0_now equal count(all)
+variable        e0_now equal v_E0_now/v_Natoms0_now
+
+variable        E0 equal ${E0_now}
+variable        Natoms0 equal ${Natoms0_now}
+variable        e0 equal ${e0_now}
+
+# ---------- Structure with two vacancies ----------
+group           divacancy id 1 1000
+delete_atoms    group divacancy compress yes
+
+run             0
+
+variable        Natoms2_now equal count(all)
+
+minimize        1e-10 1e-10 10000 10000    
+run             0
+
+variable        E2vac_now equal pe
+variable        E2vac equal ${E2vac_now}
+variable        Natoms2 equal ${Natoms2_now}
+
+# E_f = E_2vac - E0 + 2*e0
+variable        E_f equal v_E2vac-v_E0+(2*v_e0)
+
+print           "Number of atoms in perfect system = ${Natoms0}"
+print           "Number of atoms after deleting 2 atoms = ${Natoms2}"
+print           "Energy of perfect system = ${E0} eV"
+print           "Energy per atom of perfect system = ${e0} eV/atom"
+print           "Energy of system with 2 vacancies = ${E2vac} eV"
+print           "Formation energy of di-vacancy = ${E_f} eV"
+
+write_data      structure_divacancy_final.txt

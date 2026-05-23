@@ -1,0 +1,1 @@
+/opt/homebrew/opt/lammps/bin/lmp_serial -in input.txt > output.txt 2>&1
