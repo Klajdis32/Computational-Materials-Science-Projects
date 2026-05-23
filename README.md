@@ -45,12 +45,6 @@ The repository also contains atomistic visualizations generated using OVITO for 
 
 ---
 
-### Nanoparticle Visualization 2
-
-![Nanoparticle 2](readme_imgs/pic2.png)
-
----
-
 # Projects Overview
 
 ## 1. Verification of the Ideal Gas Law using Molecular Dynamics
@@ -81,6 +75,7 @@ Main topics:
 
 Tools:
 - LAMMPS
+- OVITO
 
 ---
 
@@ -113,6 +108,7 @@ Main topics:
 Tools:
 - LAMMPS
 - Monte Carlo algorithms
+- OVITO
 
 ---
 
